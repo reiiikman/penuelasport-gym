@@ -214,6 +214,40 @@
   .mapcard .btn{white-space:nowrap}
   @media(max-width:820px){.mapwrap{height:660px}.mapcard{grid-template-columns:1fr;bottom:18px;text-align:center;gap:14px;padding:22px}.mapcard address{justify-content:center}}
 
+  /* BOOKING */
+  .bk-bg{position:fixed;inset:0;background:rgba(9,10,13,.62);backdrop-filter:blur(4px);display:none;place-items:center;z-index:200;padding:18px}
+  .bk-bg.on{display:grid}
+  .bk{background:var(--paper);color:var(--ink);border-radius:20px;width:100%;max-width:470px;max-height:92vh;overflow:auto;box-shadow:0 40px 80px -30px rgba(0,0,0,.5);border:2px solid var(--ink)}
+  .bk-hd{position:sticky;top:0;background:var(--ink);color:#fff;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+  .bk-hd .t{font-family:'Anton';text-transform:uppercase;font-size:1.2rem;transform:skewX(-6deg)}
+  .bk-hd .x{background:none;border:0;color:#fff;font-size:1.5rem;line-height:1;cursor:pointer}
+  .bk-bd{padding:22px}
+  .bk h4{font-size:1.05rem;margin-bottom:12px}
+  .bk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bk-opt{border:2px solid var(--line);border-radius:12px;padding:14px;text-align:left;font-weight:800;cursor:pointer;background:var(--paper);color:var(--ink);transition:.14s}
+  .bk-opt:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .bk-opt.on{border-color:var(--magenta);box-shadow:0 0 0 3px rgba(233,30,140,.16)}
+  .bk-opt small{display:block;color:var(--ink-soft);font-weight:600;font-size:.76rem;margin-top:3px}
+  .bk-chip{border:2px solid var(--line);border-radius:999px;padding:.5em 1em;font-weight:700;cursor:pointer;background:var(--paper);color:var(--ink);font-size:.9rem}
+  .bk-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .bk-row{display:flex;flex-wrap:wrap;gap:8px}
+  .bk label{font-weight:700;font-size:.82rem;display:block;margin:12px 0 4px}
+  .bk input,.bk select{width:100%;padding:.7em .8em;border:2px solid var(--line);border-radius:10px;font-family:inherit;font-size:1rem;color:var(--ink);background:var(--paper)}
+  .bk input:focus,.bk select:focus{outline:0;border-color:var(--magenta)}
+  .bk-foot{display:flex;gap:10px;margin-top:18px}
+  .bk-summary{background:var(--paper-2);border-radius:12px;padding:6px 16px;font-size:.93rem}
+  .bk-summary .li{display:flex;justify-content:space-between;gap:12px;padding:.5em 0;border-bottom:1px solid var(--line)}
+  .bk-summary .li:last-child{border-bottom:0}
+  .bk-summary .li b{font-weight:800;text-align:right}
+  .bk .spin{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--magenta);border-radius:50%;margin:16px auto;animation:bkspin .8s linear infinite}
+  @keyframes bkspin{to{transform:rotate(360deg)}}
+  .paybtn{display:flex;align-items:center;gap:.8em;border:2px solid var(--line);border-radius:12px;padding:.9em 1em;font-weight:800;font-size:1rem;background:var(--paper);color:var(--ink);cursor:pointer;width:100%;text-align:left;margin-bottom:10px}
+  .paybtn:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .paybtn .lg{width:40px;height:28px;border-radius:6px;display:grid;place-items:center;font-family:'Anton';font-size:.72rem;color:#fff;flex:0 0 auto}
+  .paybtn small{display:block;color:var(--ink-soft);font-weight:600;font-size:.74rem}
+  .wa-contact{display:inline-flex;align-items:center;gap:.5em;background:#25D366;color:#fff;font-weight:800;border-radius:999px;padding:.7em 1.3em;margin-top:16px}
+  .wa-contact svg{width:1.2em;height:1.2em}
+
   /* FOOTER */
   footer{background:#08090b;color:#aab1bd;padding:58px 0 36px;font-size:.93rem}
   .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:26px;align-items:flex-start}
@@ -236,7 +270,7 @@
       <a href="#planes">Planes</a>
       <a href="#entrenadores">Entrenadores</a>
       <a href="#nosotros">Nosotros</a>
-      <a href="#ubicacion">Ubicación</a>
+      <a href="#" id="navAgendar">Agendar</a>
       <a href="app.html">Área Socio</a>
     </nav>
     <a class="btn btn-grad nav-cta" href="app.html">Área Socio</a>
@@ -444,6 +478,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
         Pueblito Peñuelas, Área Deportiva · Coquimbo · penuelasport24@gmail.com · +569 5451 7153
       </address>
+      <a class="wa-contact" href="https://wa.me/56954517153" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.9 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.5-1.2-2.9s.7-2 1-2.3c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.6-.3.3c-.2.2-.4.4-.2.7.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.4.1.1.1.7-.2 1.4z"/></svg>
+        Contáctanos por WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -476,11 +514,9 @@
   <div class="wrap">
     <span class="eyebrow" style="color:var(--cyan)">Empieza hoy</span>
     <h2 class="display">Ven por tu día de prueba GRATIS</h2>
-    <p>Agenda tu visita por WhatsApp. Te mostramos el gimnasio y entrenas una sesión sin costo.</p>
-    <a class="btn btn-grad" href="https://wa.me/56954517153" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.9 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.5-1.2-2.9s.7-2 1-2.3c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.6-.3.3c-.2.2-.4.4-.2.7.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.4.1.1.1.7-.2 1.4z"/></svg>
-      Escríbenos por WhatsApp
-    </a>
+    <p>Agenda 100% online — elige el día y la hora, sin llamar ni esperar.</p>
+    <a class="btn btn-grad" href="#">Agendar mi Día de prueba GRATIS</a>
+    <div style="margin-top:16px"><a href="https://wa.me/56954517153" target="_blank" rel="noopener" style="color:#dfe3ea;font-weight:700;font-size:.92rem">o escríbenos por WhatsApp →</a></div>
   </div>
 </section>
 
@@ -525,6 +561,129 @@
     <div class="foot-bottom">© 2026 PeñuelaSport GYM · Coquimbo. Todos los derechos reservados.</div>
   </div>
 </footer>
+
+<!-- BOOKING MODAL -->
+<div class="bk-bg" id="bkBg" onclick="if(event.target===this)bkClose()"><div class="bk" id="bk"></div></div>
+
+<script>
+(function(){
+"use strict";
+const CLP=n=> (!n||n===0)?'GRATIS':'$'+n.toLocaleString('es-CL');
+const SLOTS=['08:00','10:00','12:00','15:00','17:00','19:00','21:00'];
+const CLASSES=['Funcional','Spinning','Crossfit','Zumba','Boxeo'];
+const PLANS={turno:['Turno 14×14',25000],estudiantil:['Plan Estudiantil',20000],mus:['Sala de Musculación · Mensual',30000]};
+const NUTRI={evaln:['Evaluación nutricional',30000],control:['Control nutricional',25000]};
+const SVC={prueba:{t:'Día de prueba GRATIS'},clase:{t:'Clase dirigida'},nutri:{t:'Cita nutricionista'},evalfis:{t:'Evaluación física',price:15000},personalizado:{t:'Sesión personalizada',price:12000},plan:{t:'Inscripción a plan'}};
+let bk={};
+const box=()=>document.getElementById('bk');
+function needsOpts(){return bk.svc==='clase'||bk.svc==='nutri'||(bk.svc==='plan'&&!bk.plan);}
+function needsDate(){return bk.svc!=='plan';}
+function price(){ if(bk.svc==='plan')return (PLANS[bk.plan]||[,0])[1]; if(bk.svc==='nutri')return (NUTRI[bk.nutri]||[,0])[1]; return SVC[bk.svc]&&SVC[bk.svc].price||0; }
+function label(){ if(bk.svc==='plan')return (PLANS[bk.plan]||['Plan'])[0]; if(bk.svc==='nutri')return (NUTRI[bk.nutri]||['Cita'])[0]; if(bk.svc==='clase')return 'Clase '+(bk.clase||''); return SVC[bk.svc].t; }
+function order(){ let o=['svc']; if(needsOpts())o.push('opts'); if(needsDate())o.push('fecha'); o.push('datos','confirm'); if(price()>0)o.push('pay'); o.push('done'); return o; }
+function after(s){const o=order();return o[o.indexOf(s)+1];}
+function before(s){const o=order();return o[o.indexOf(s)-1];}
+function tomorrow(){const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);}
+function fmt(f){try{return new Date(f+'T00:00').toLocaleDateString('es-CL',{weekday:'short',day:'2-digit',month:'short'});}catch(e){return f;}}
+function toastB(m){let t=document.getElementById('bkToast');if(!t){t=document.createElement('div');t.id='bkToast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f1216;color:#fff;padding:.7em 1.2em;border-radius:10px;font-weight:700;z-index:400;transition:.2s';document.body.appendChild(t);}t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(()=>t.style.opacity='0',1800);}
+const hd=t=>`<div class="bk-hd"><span class="t">${t}</span><button class="x" onclick="bkClose()">×</button></div>`;
+const foot=(back,act)=>`<div class="bk-foot">${back?'<button class="btn btn-ghost btn-sm" style="padding:.7em 1.1em" onclick="bkBack()">Atrás</button>':''}${act||''}</div>`;
+
+window.bkOpen=(svc,plan)=>{ bk={svc:svc||'',plan:plan||'',nutri:'',clase:'',fecha:'',hora:'',nombre:'',tel:'',email:'',medio:null}; bk.step=svc?after('svc'):'svc'; document.getElementById('bkBg').classList.add('on'); render(); };
+window.bkClose=()=>document.getElementById('bkBg').classList.remove('on');
+window.bkBack=()=>{bk.step=before(bk.step);render();};
+window.bkGo=s=>{bk.step=s;render();};
+window.bkOptsNext=()=>{ if(bk.svc==='clase'&&!bk.clase)return toastB('Elige una clase'); if(bk.svc==='nutri'&&!bk.nutri)return toastB('Elige el tipo'); if(bk.svc==='plan'&&!bk.plan)return toastB('Elige un plan'); bk.step=after('opts');render(); };
+window.bkDateNext=()=>{ const d=document.getElementById('bkDate'); bk.fecha=d?d.value:bk.fecha; if(!bk.fecha)return toastB('Elige un día'); if(!bk.hora)return toastB('Elige una hora'); bk.step=after('fecha');render(); };
+window.bkDatosNext=()=>{ bk.nombre=document.getElementById('bkN').value.trim(); bk.tel=document.getElementById('bkT').value.trim(); bk.email=document.getElementById('bkE').value.trim(); if(!bk.nombre||!bk.tel)return toastB('Completa nombre y teléfono'); bk.step=after('datos');render(); };
+window.bkPay=m=>{ bk.medio=m; box().innerHTML=hd('Procesando')+`<div class="bk-bd" style="text-align:center"><div class="spin"></div><p style="font-weight:800">Procesando pago seguro…</p><p style="color:var(--ink-soft);font-size:.75rem;margin-top:4px">Redirigiendo a ${m} (simulado)</p></div>`; setTimeout(bkFinish,1400); };
+window.bkFinish=()=>{ const folio='PS'+Math.floor(Math.random()*900000+100000); try{const a=JSON.parse(localStorage.getItem('ps_bookings')||'[]');a.push({folio,svc:label(),fecha:bk.fecha,hora:bk.hora,nombre:bk.nombre,total:price(),medio:bk.medio});localStorage.setItem('ps_bookings',JSON.stringify(a));}catch(e){} bk.folio=folio; bk.step='done'; render(); };
+
+function render(){
+  const s=bk.step;
+  if(s==='svc'){
+    box().innerHTML=hd('¿Qué quieres agendar?')+`<div class="bk-bd"><div class="bk-grid">
+      <button class="bk-opt" data-s="prueba">Día de prueba<small>GRATIS</small></button>
+      <button class="bk-opt" data-s="clase">Clase dirigida<small>Gratis · socios</small></button>
+      <button class="bk-opt" data-s="nutri">Nutricionista<small>Evaluación / control</small></button>
+      <button class="bk-opt" data-s="evalfis">Evaluación física<small>$15.000</small></button>
+      <button class="bk-opt" data-s="personalizado">Personalizado<small>Sesión 1:1</small></button>
+      <button class="bk-opt" data-s="plan">Inscribir plan<small>Membresía</small></button>
+    </div></div>`;
+    box().querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{bk.svc=b.dataset.s;bk.step=after('svc');render();});
+  } else if(s==='opts'){
+    let body='';
+    if(bk.svc==='clase')body=`<h4>Elige la clase</h4><div class="bk-row">${CLASSES.map(c=>`<button class="bk-chip ${bk.clase===c?'on':''}" data-c="${c}">${c}</button>`).join('')}</div>`;
+    if(bk.svc==='nutri')body=`<h4>Tipo de atención</h4><div class="bk-grid">${Object.entries(NUTRI).map(([k,v])=>`<button class="bk-opt ${bk.nutri===k?'on':''}" data-n="${k}">${v[0]}<small>${CLP(v[1])}</small></button>`).join('')}</div>`;
+    if(bk.svc==='plan')body=`<h4>Elige tu plan</h4><div class="bk-grid">${Object.entries(PLANS).map(([k,v])=>`<button class="bk-opt ${bk.plan===k?'on':''}" data-p="${k}">${v[0]}<small>${CLP(v[1])}</small></button>`).join('')}</div>`;
+    box().innerHTML=hd('Detalle')+`<div class="bk-bd">${body}${foot(true,'<button class="btn btn-grad" style="flex:1" onclick="bkOptsNext()">Continuar</button>')}</div>`;
+    box().querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{bk.clase=b.dataset.c;render();});
+    box().querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{bk.nutri=b.dataset.n;render();});
+    box().querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{bk.plan=b.dataset.p;render();});
+  } else if(s==='fecha'){
+    const min=tomorrow();
+    box().innerHTML=hd('Fecha y hora')+`<div class="bk-bd">
+      <label>Día</label><input type="date" id="bkDate" min="${min}" value="${bk.fecha||min}">
+      <label>Hora</label><div class="bk-row">${SLOTS.map(x=>`<button class="bk-chip ${bk.hora===x?'on':''}" data-h="${x}">${x}</button>`).join('')}</div>
+      ${foot(true,'<button class="btn btn-grad" style="flex:1" onclick="bkDateNext()">Continuar</button>')}</div>`;
+    document.getElementById('bkDate').onchange=e=>bk.fecha=e.target.value;
+    box().querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{bk.hora=b.dataset.h;render();});
+  } else if(s==='datos'){
+    box().innerHTML=hd('Tus datos')+`<div class="bk-bd">
+      <label>Nombre</label><input id="bkN" value="${bk.nombre}" placeholder="Tu nombre">
+      <label>Teléfono</label><input id="bkT" value="${bk.tel}" placeholder="+569 ...">
+      <label>Email</label><input id="bkE" type="email" value="${bk.email}" placeholder="tucorreo@mail.com">
+      ${foot(true,'<button class="btn btn-grad" style="flex:1" onclick="bkDatosNext()">Continuar</button>')}</div>`;
+  } else if(s==='confirm'){
+    const p=price();
+    box().innerHTML=hd('Confirmar')+`<div class="bk-bd">
+      <div class="bk-summary">
+        <div class="li"><span>Servicio</span><b>${label()}</b></div>
+        ${needsDate()?`<div class="li"><span>Fecha</span><b>${bk.fecha?fmt(bk.fecha)+' · '+bk.hora:'—'}</b></div>`:''}
+        <div class="li"><span>A nombre de</span><b>${bk.nombre}</b></div>
+        <div class="li"><span>Total</span><b>${CLP(p)}</b></div>
+      </div>
+      ${foot(true, p>0?'<button class="btn btn-grad" style="flex:1" onclick="bkGo(\'pay\')">Ir al pago</button>':'<button class="btn btn-grad" style="flex:1" onclick="bkFinish()">Confirmar reserva</button>')}</div>`;
+  } else if(s==='pay'){
+    const p=price();
+    box().innerHTML=hd('Portal de pago')+`<div class="bk-bd">
+      <p style="color:var(--ink-soft);font-weight:600;margin-bottom:2px">${label()}</p>
+      <p style="font-family:'Anton';font-size:2rem;margin-bottom:14px">${CLP(p)}</p>
+      <button class="paybtn" data-m="Webpay"><span class="lg" style="background:#e30613">WP</span><span>Webpay<small>Débito / crédito · Transbank</small></span></button>
+      <button class="paybtn" data-m="Mercado Pago"><span class="lg" style="background:#009ee3">MP</span><span>Mercado Pago<small>Tarjetas, saldo y cuotas</small></span></button>
+      <p style="color:var(--ink-soft);font-size:.74rem;margin-top:4px">Pago 100% simulado (DEMO).</p>
+      ${foot(true,'')}</div>`;
+    box().querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>bkPay(b.dataset.m));
+  } else if(s==='done'){
+    const p=price();
+    box().innerHTML=`<div class="bk-bd" style="text-align:center;padding:32px 22px">
+      <div style="width:66px;height:66px;border-radius:50%;background:#15a06a;display:grid;place-items:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" width="36" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3 style="font-size:1.4rem">${p>0?'¡Pago aprobado!':'¡Reserva confirmada!'}</h3>
+      <p style="color:var(--ink-soft);margin:6px 0">${label()}${needsDate()&&bk.fecha?' · '+fmt(bk.fecha)+' '+bk.hora:''}</p>
+      <p style="font-weight:800">Folio ${bk.folio}</p>
+      <p style="color:var(--ink-soft);font-size:.82rem;margin:8px 0 18px">Te enviamos la confirmación a ${bk.email||'tu correo'} (demo).</p>
+      <button class="btn btn-grad btn-block" onclick="bkClose()">Listo</button></div>`;
+  }
+}
+
+/* wire landing CTAs → booking (WhatsApp queda solo para contacto) */
+function wire(){
+  document.querySelectorAll('a.btn').forEach(a=>{
+    const t=(a.textContent||'').trim();
+    if(t.includes('Día de prueba')){a.setAttribute('href','#');a.addEventListener('click',e=>{e.preventDefault();bkOpen('prueba');});}
+    else if(t.includes('Agenda tu hora')){a.setAttribute('href','#');a.addEventListener('click',e=>{e.preventDefault();bkOpen('nutri');});}
+  });
+  document.querySelectorAll('.plan').forEach(card=>{
+    const h=(card.querySelector('h3')&&card.querySelector('h3').textContent)||'';
+    const b=card.querySelector('.btn'); if(!b)return;
+    const id=h.includes('Turno')?'turno':h.includes('Estudiantil')?'estudiantil':h.includes('Musculación')?'mus':null;
+    if(id){b.setAttribute('href','#');b.addEventListener('click',e=>{e.preventDefault();bkOpen('plan',id);});}
+  });
+  const na=document.getElementById('navAgendar'); if(na)na.addEventListener('click',e=>{e.preventDefault();bkOpen();});
+}
+if(document.readyState!=='loading')wire();else document.addEventListener('DOMContentLoaded',wire);
+})();
+</script>
 
 <script type="module">
   import { prepare, layout } from './pretext.js';
