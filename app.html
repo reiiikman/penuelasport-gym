@@ -50,6 +50,26 @@
   .tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08)}
   .sync-note{display:flex;align-items:center;gap:.5em;justify-content:center;color:var(--ink-soft);font-size:.78rem;margin-top:18px}
   .dot-ok{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(21,160,106,.2)}
+  /* split auth + slider */
+  .auth-card.split{max-width:880px;padding:0;overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
+  .auth-visual{position:relative;overflow:hidden;background:var(--ink);min-height:580px}
+  .auth-visual .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.06);transition:opacity 1s ease,transform 6s ease}
+  .auth-visual .slide.on{opacity:1;transform:scale(1)}
+  .auth-visual .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,16,.1),rgba(11,13,16,.72));z-index:1}
+  .auth-visual .cap{position:absolute;left:30px;right:30px;bottom:28px;color:#fff;z-index:2}
+  .auth-visual .cap h2{font-family:'Anton';font-size:2.1rem;line-height:.95;text-transform:uppercase}
+  .auth-visual .cap p{color:#dfe3ea;font-size:.9rem;margin-top:.5em}
+  .auth-visual .dots{position:absolute;top:18px;right:20px;display:flex;gap:6px;z-index:3}
+  .auth-visual .dots button{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;padding:0;transition:.3s}
+  .auth-visual .dots button.on{background:#fff;width:20px;border-radius:999px}
+  .auth-side{padding:38px}
+  .auth-side .logo{margin:0 0 18px}
+  .auth-side h1,.auth-side .sub{text-align:left}
+  @media(max-width:820px){.auth-card.split{grid-template-columns:1fr;max-width:420px}.auth-visual{display:none}.auth-side{padding:34px}}
+  .fade-up{opacity:0;transform:translateY(14px);animation:fu .5s ease forwards}
+  .fade-up:nth-child(1){animation-delay:.04s}.fade-up:nth-child(2){animation-delay:.11s}.fade-up:nth-child(3){animation-delay:.18s}.fade-up:nth-child(4){animation-delay:.25s}.fade-up:nth-child(5){animation-delay:.32s}.fade-up:nth-child(6){animation-delay:.39s}
+  @keyframes fu{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade-up{animation:none;opacity:1;transform:none}.auth-visual .slide{transition:opacity .4s}}
 
   /* APP SHELL */
   .app{display:none;min-height:100vh;padding-top:34px}
@@ -138,22 +158,29 @@
 
 <!-- AUTH -->
 <div class="auth" id="authView">
-  <div class="auth-card">
-    <img src="logo.webp" alt="PeñuelaSport GYM" class="logo">
-    <h1>Área Socio</h1>
-    <p class="sub">Tu cuenta sincronizada con la terminal del gym y la app móvil.</p>
-    <div class="tabs">
-      <button class="on" data-tab="login">Iniciar sesión</button>
-      <button data-tab="signup">Crear cuenta</button>
+  <div class="auth-card split">
+    <div class="auth-visual" id="slider">
+      <div class="ov"></div>
+      <div class="cap"><h2>Entrena tu<br>mejor versión</h2><p>Tu cuenta PeñuelaSport, sincronizada en un solo lugar.</p></div>
+      <div class="dots" id="sliderDots"></div>
     </div>
-    <form id="authForm">
-      <div class="field" data-signup style="display:none"><label>Nombre</label><input name="nombre" placeholder="Tu nombre"></div>
-      <div class="field"><label>Email</label><input name="email" type="email" placeholder="tucorreo@mail.com" required></div>
-      <div class="field"><label>Contraseña</label><input name="pass" type="password" placeholder="••••••••" required></div>
-      <button class="btn btn-grad btn-block" type="submit" id="authSubmit">Entrar</button>
-    </form>
-    <button class="btn btn-ghost btn-block" id="btnDemo" style="margin-top:10px">Entrar como DEMO</button>
-    <div class="sync-note"><span class="dot-ok"></span> Sincronización terminal + app móvil (simulada)</div>
+    <div class="auth-side">
+      <img src="logo.webp" alt="PeñuelaSport GYM" class="logo fade-up">
+      <h1 class="fade-up">Área Socio</h1>
+      <p class="sub fade-up">Tu cuenta sincronizada con la terminal del gym y la app móvil.</p>
+      <div class="tabs fade-up">
+        <button class="on" data-tab="login">Iniciar sesión</button>
+        <button data-tab="signup">Crear cuenta</button>
+      </div>
+      <form id="authForm" class="fade-up">
+        <div class="field" data-signup style="display:none"><label>Nombre</label><input name="nombre" placeholder="Tu nombre"></div>
+        <div class="field"><label>Email</label><input name="email" type="email" placeholder="tucorreo@mail.com" required></div>
+        <div class="field"><label>Contraseña</label><input name="pass" type="password" placeholder="••••••••" required></div>
+        <button class="btn btn-grad btn-block" type="submit" id="authSubmit">Entrar</button>
+      </form>
+      <button class="btn btn-ghost btn-block fade-up" id="btnDemo" style="margin-top:10px">Entrar como DEMO</button>
+      <div class="sync-note fade-up"><span class="dot-ok"></span> Sincronización terminal + app móvil (simulada)</div>
+    </div>
   </div>
 </div>
 
@@ -493,6 +520,27 @@ $("#modalBg").onclick=e=>{ if(e.target===$("#modalBg")) closeModal(); };
 window.go=go;
 let toastT;
 function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),2200); }
+
+/* ---------- login image slider ---------- */
+(function initSlider(){
+  const box=$("#slider"); if(!box) return;
+  const imgs=[
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=900&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=900&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&auto=format&fit=crop&q=60"
+  ];
+  const dots=$("#sliderDots"); const ov=box.querySelector(".ov");
+  imgs.forEach((u,i)=>{
+    const s=document.createElement("div"); s.className="slide"+(i===0?" on":""); s.style.backgroundImage=`url('${u}')`;
+    box.insertBefore(s,ov);
+    const b=document.createElement("button"); if(i===0)b.className="on"; b.setAttribute("aria-label","Imagen "+(i+1)); b.onclick=()=>set(i); dots.appendChild(b);
+  });
+  const slides=box.querySelectorAll(".slide"), dbtn=dots.querySelectorAll("button"); let idx=0,t;
+  function set(i){ idx=i; slides.forEach((s,k)=>s.classList.toggle("on",k===i)); dbtn.forEach((b,k)=>b.classList.toggle("on",k===i)); loop(); }
+  function loop(){ clearInterval(t); t=setInterval(()=>set((idx+1)%slides.length),4000); }
+  loop();
+})();
 
 /* auto-resume session */
 if(data && sessionStorage.getItem("ps_in")) enterApp();
