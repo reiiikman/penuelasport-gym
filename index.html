@@ -179,6 +179,15 @@
   .plate{display:inline-flex;align-items:center;background:var(--ink);color:#fff;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.14em;padding:.4em 1em;border-radius:8px;border:2px solid #fff;box-shadow:4px 4px 0 var(--magenta);transform:skewX(-7deg);font-size:.82rem}
   .plate>span{display:inline-block;transform:skewX(7deg)}
   .checkers{height:16px;background:repeating-conic-gradient(#0f1216 0 25%,#fff 0 50%) 0 0/26px 26px}
+  /* velocidad / cortes / dorsales */
+  .sec-head h2,.about h2,.cta h2{transform:skewX(-6deg)}
+  .sec-head{position:relative}
+  .sec-head[data-num]::before{content:attr(data-num);position:absolute;top:-.52em;left:50%;transform:translateX(-50%) skewX(-6deg);font-family:'Anton';font-size:clamp(6rem,16vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:2px rgba(15,18,22,.07);z-index:-1;pointer-events:none;white-space:nowrap}
+  .dark-band .sec-head[data-num]::before{-webkit-text-stroke-color:rgba(255,255,255,.08)}
+  .dark-band{clip-path:polygon(0 0,100% 2.2%,100% 100%,0 97.8%)}
+  .cta{clip-path:polygon(0 2.6%,100% 0,100% 100%,0 100%)}
+  .about::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,rgba(233,30,140,.07) 0 3px,transparent 3px 11px);z-index:0}
+  .about>.wrap{position:relative;z-index:1}
   /* NOSOTROS */
   .about{background:var(--ink2);color:#fff;position:relative;overflow:hidden}
   .about-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:44px;align-items:center}
@@ -301,7 +310,7 @@
 <!-- PLANES -->
 <section id="planes">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head" data-num="01">
       <span class="eyebrow">Planes</span>
       <h2 class="display">Elige tu plan</h2>
       <p>Precios reales, sin letra chica. Paga por lo que necesitas.</p>
@@ -357,7 +366,7 @@
 <!-- ENTRENADORES -->
 <section id="entrenadores" class="benes">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head" data-num="02">
       <span class="eyebrow">Equipo</span>
       <h2 class="display">Nuestros entrenadores</h2>
       <p>Profes altamente calificados. Entrena según tus metas.</p>
@@ -395,7 +404,7 @@
 <!-- NUTRICION -->
 <section id="nutricion" class="dark-band">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head" data-num="03">
       <span class="eyebrow">Nutrición</span>
       <h2 class="display">Atención nutricional</h2>
       <p>Atención 100% personalizada para el logro de tus objetivos.</p>
