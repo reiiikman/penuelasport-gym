@@ -142,6 +142,17 @@
     .botnav a svg{width:22px;height:22px}
     .botnav a.on{color:var(--magenta)}
   }
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:.6em;width:100%;border:2px solid var(--line);border-radius:12px;padding:.8em;font-weight:700;background:var(--paper);color:var(--ink);cursor:pointer}
+  .gbtn:hover{border-color:var(--ink)}
+  .gbtn svg{width:20px;height:20px}
+  .or{display:flex;align-items:center;gap:.8em;color:var(--ink-soft);font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px}
+  .or::before,.or::after{content:"";height:1px;background:var(--line);flex:1}
+  .paybtn{display:flex;align-items:center;gap:.8em;border:2px solid var(--line);border-radius:12px;padding:.9em 1em;font-weight:800;font-size:1rem;background:var(--paper);color:var(--ink);cursor:pointer;transition:.15s;width:100%;text-align:left}
+  .paybtn:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .paybtn .lg{width:40px;height:28px;border-radius:6px;display:grid;place-items:center;font-family:'Anton';font-size:.72rem;color:#fff;flex:0 0 auto}
+  .paybtn small{display:block;color:var(--ink-soft);font-weight:600;font-size:.75rem}
+  .spinner{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--magenta);border-radius:50%;margin:8px auto;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .pay-methods{display:flex;flex-direction:column;gap:8px;margin:14px 0}
   .pay-methods label{display:flex;align-items:center;gap:.6em;border:2px solid var(--line);border-radius:11px;padding:.7em;cursor:pointer;font-weight:600;margin:0}
   .pay-methods input{width:auto}
@@ -172,6 +183,11 @@
         <button class="on" data-tab="login">Iniciar sesión</button>
         <button data-tab="signup">Crear cuenta</button>
       </div>
+      <button class="gbtn fade-up" id="btnGoogle" type="button">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 010-4.2V7.06H2.18a11 11 0 000 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 4.75c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.46 14.97.5 12 .5A11 11 0 002.18 7.06l3.66 2.84C6.71 6.68 9.14 4.75 12 4.75z"/></svg>
+        Continuar con Google
+      </button>
+      <div class="or fade-up">o con tu email</div>
       <form id="authForm" class="fade-up">
         <div class="field" data-signup style="display:none"><label>Nombre</label><input name="nombre" placeholder="Tu nombre"></div>
         <div class="field"><label>Email</label><input name="email" type="email" placeholder="tucorreo@mail.com" required></div>
@@ -287,6 +303,7 @@ $("#authForm").onsubmit = e=>{
   toast(signup?"Cuenta creada (demo)":"Sesión iniciada");
 };
 $("#btnDemo").onclick = ()=>{ if(!data) data=seed(); DB.save(data); enterApp(); toast("Entraste como demo"); };
+$("#btnGoogle").onclick = ()=>{ if(!data) data=seed(); data.user.nombre="Socio Google"; data.user.email="socio.demo@gmail.com"; DB.save(data); enterApp(); toast("Sesión con Google (demo)"); };
 $("#btnLogout").onclick = ()=>{ sessionStorage.removeItem("ps_in"); $("#appView").classList.remove("on"); $("#authView").style.display="grid"; };
 $("#btnReset").onclick = ()=>{ if(confirm("¿Reiniciar la demo? Se borrarán los datos de este navegador.")){ DB.reset(); data=null; location.reload(); } };
 
@@ -388,21 +405,46 @@ function openPlanPicker(){
   };
 }
 function payFlow(concepto,monto,onOk){
-  modal(`<button class="x" onclick="closeModal()">×</button><h3>Pago en línea</h3>
-    <p class="muted" style="margin-bottom:6px">${concepto}</p>
-    <p style="font-family:'Anton';font-size:2rem">${CLP(monto)}</p>
-    <div class="pay-methods">
-      <label><input type="radio" name="medio" value="Webpay" checked> Webpay (Transbank)</label>
-      <label><input type="radio" name="medio" value="Mercado Pago"> Mercado Pago</label>
-      <label><input type="radio" name="medio" value="Transferencia"> Transferencia</label>
-    </div>
-    <p class="muted" style="font-size:.78rem;margin-bottom:12px">Pago simulado — no se procesa dinero real (DEMO).</p>
-    <button class="btn btn-grad btn-block" id="doPay">Pagar ${CLP(monto)}</button>`);
-  $("#doPay").onclick=()=>{
-    const medio=document.querySelector('input[name=medio]:checked').value;
-    data.payments.push({id:uid(),fecha:today(),concepto,monto,medio,estado:"aprobado"});
-    DB.save(data); closeModal(); if(onOk)onOk();
-  };
+  const BRAND={ "Webpay":{lg:"#e30613",name:"Webpay",sub:"Transbank"}, "Mercado Pago":{lg:"#009ee3",name:"Mercado Pago",sub:"Checkout"} };
+  function step1(){
+    modal(`<button class="x" onclick="closeModal()">×</button>
+      <h3>Portal de pago</h3>
+      <p class="muted" style="margin-bottom:2px">${concepto}</p>
+      <p style="font-family:'Anton';font-size:2.3rem;margin-bottom:16px">${CLP(monto)}</p>
+      <p style="font-weight:800;font-size:.85rem;margin-bottom:10px">Elige tu medio de pago</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="paybtn" data-m="Webpay"><span class="lg" style="background:#e30613">WP</span><span>Webpay<small>Débito / crédito · Transbank</small></span></button>
+        <button class="paybtn" data-m="Mercado Pago"><span class="lg" style="background:#009ee3">MP</span><span>Mercado Pago<small>Tarjetas, saldo y cuotas</small></span></button>
+      </div>
+      <p class="muted" style="font-size:.74rem;margin-top:14px">Pago 100% simulado (DEMO) — no se procesa dinero real.</p>`);
+    document.querySelectorAll(".paybtn").forEach(b=>b.onclick=()=>step2(b.dataset.m));
+  }
+  function step2(medio){
+    const b=BRAND[medio];
+    modal(`<div style="text-align:center;padding:8px 4px">
+      <div style="display:inline-flex;align-items:center;gap:.5em;background:${b.lg};color:#fff;font-family:'Anton';padding:.5em 1em;border-radius:10px;font-size:1.1rem">${b.name}</div>
+      <p style="font-family:'Anton';font-size:2rem;margin:16px 0 2px">${CLP(monto)}</p>
+      <p class="muted" style="margin-bottom:8px">${concepto}</p>
+      <div class="spinner"></div>
+      <p style="font-weight:800;margin-top:10px">Procesando pago seguro…</p>
+      <p class="muted" style="font-size:.72rem;margin-top:4px">Redirigiendo a ${b.name} · ${b.sub} (simulado)</p>
+    </div>`);
+    setTimeout(()=>{
+      const comp=uid().slice(2).toUpperCase();
+      data.payments.push({id:uid(),fecha:today(),concepto,monto,medio,estado:"aprobado"});
+      DB.save(data);
+      modal(`<div style="text-align:center;padding:10px 4px">
+        <div style="width:66px;height:66px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:0 auto 14px">
+          <svg viewBox="0 0 24 24" width="36" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>¡Pago aprobado!</h3>
+        <p class="muted" style="margin:6px 0 2px">${concepto}</p>
+        <p style="font-family:'Anton';font-size:1.7rem">${CLP(monto)}</p>
+        <p class="muted" style="font-size:.8rem;margin:8px 0 16px">Pagado con ${medio} · comprobante N° ${comp}</p>
+        <button class="btn btn-grad btn-block" id="payDone">Listo</button></div>`);
+      $("#payDone").onclick=()=>{ closeModal(); if(onOk)onOk(); };
+    },1500);
+  }
+  step1();
 }
 function vRutinas(){
   $("#viewBody").innerHTML=`
