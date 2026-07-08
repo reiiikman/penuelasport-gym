@@ -116,8 +116,22 @@
   .pm .lg{width:36px;height:26px;border-radius:6px;display:grid;place-items:center;color:#fff;font-family:'Anton';font-size:.7rem}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:.85em 1.3em;border-radius:11px;font-weight:700;z-index:200;opacity:0;transition:.25s;pointer-events:none}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-  @media(max-width:1000px){.app{grid-template-columns:1fr}.side{display:none}.c4,.c3{grid-template-columns:1fr 1fr}.pos{grid-template-columns:1fr}}
-  @media(max-width:620px){.c4,.c3,.c2{grid-template-columns:1fr}}
+  @media(max-width:1000px){
+    .app{grid-template-columns:1fr}
+    .side{position:sticky;top:30px;height:auto;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;padding:8px 10px;border-right:0;border-bottom:1px solid var(--line);z-index:50}
+    .side .logo,.side .grp,.side .me{display:none}
+    .side nav{display:flex;gap:4px}
+    .side nav a{white-space:nowrap;padding:.5em .8em}
+    .side nav a .soon,.side nav a .dot{display:none}
+    .c4,.c3{grid-template-columns:1fr 1fr}
+    .pos{grid-template-columns:1fr}
+    .top{flex-wrap:wrap;gap:10px}
+    .search{order:3;flex:1 1 100%;max-width:none}
+    .main{padding:6px 16px 40px}
+    .card{overflow-x:auto}
+    table{white-space:nowrap}
+  }
+  @media(max-width:620px){.c4,.c3,.c2{grid-template-columns:1fr}.top h1{font-size:1.4rem}.top .who small{display:none}}
 </style>
 </head>
 <body>

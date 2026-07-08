@@ -142,6 +142,13 @@
     .botnav a svg{width:22px;height:22px}
     .botnav a.on{color:var(--magenta)}
   }
+  @media(max-width:820px){
+    .topbar{flex-wrap:wrap;gap:10px;align-items:flex-start}
+    .topbar h2{font-size:1.5rem}
+    .main table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+    .ex-head{display:none}
+    .modal{padding:20px}
+  }
   .gbtn{display:flex;align-items:center;justify-content:center;gap:.6em;width:100%;border:2px solid var(--line);border-radius:12px;padding:.8em;font-weight:700;background:var(--paper);color:var(--ink);cursor:pointer}
   .gbtn:hover{border-color:var(--ink)}
   .gbtn svg{width:20px;height:20px}
@@ -231,7 +238,7 @@ const addDays = (d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
 
 /* ---------- DATA ---------- */
 const DB = {
-  get k(){return "ps_demo_v1";},
+  get k(){return "ps_demo_v2";},
   load(){ try{return JSON.parse(localStorage.getItem(this.k))||null;}catch(e){return null;} },
   save(d){ localStorage.setItem(this.k, JSON.stringify(d)); },
   reset(){ localStorage.removeItem(this.k); }
@@ -276,8 +283,11 @@ function seed(){
        ejercicios:[{n:"Sentadilla",s:4,r:"8",p:"60",d:"120"},{n:"Press banca",s:4,r:"8",p:"50",d:"120"},{n:"Dominadas",s:3,r:"8",p:"-",d:"90"}]}
     ],
     appts:[
+      {id:uid(),tipo:"Clase personalizada 1:1",con:"Jorge Jordán",fecha:addDays(today(),1),estado:"confirmada"},
+      {id:uid(),tipo:"Clase personalizada 1:1",con:"Constanza Puga",fecha:addDays(today(),3),estado:"confirmada"},
       {id:uid(),tipo:"Control nutricional",con:"Catalina Varas",fecha:addDays(today(),5),estado:"confirmada"}
     ],
+    ptplan:{nivel:"3 clases/semana",coach:"Jorge Jordán",restantes:2},
     checkins:[
       {fecha:addDays(today(),-1),hora:"19:12"},{fecha:addDays(today(),-3),hora:"18:40"}
     ]
@@ -363,6 +373,14 @@ function vInicio(){
         <h3>Accesos recientes (terminal)</h3>
         <table><tbody>${data.checkins.map(c=>`<tr><td>${fmt(c.fecha)}</td><td class="r muted">${c.hora}</td><td class="r"><span class="badge ok">Ingreso</span></td></tr>`).join("")}</tbody></table>
         <p class="muted" style="font-size:.78rem;margin-top:10px">Sincronizado con la terminal del gym (simulado).</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div class="sec-title"><h3>Clases personalizadas 1:1</h3><span class="badge info">${data.ptplan?data.ptplan.nivel:"Sin plan"}</span></div>
+      <p class="muted" style="font-size:.92rem">Con <b>${data.ptplan?data.ptplan.coach:"—"}</b> · te quedan <b>${data.ptplan?data.ptplan.restantes:0}</b> clases esta semana.</p>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-grad btn-sm" onclick="go('agenda')">Agendar clase</button>
+        <button class="btn btn-ghost btn-sm" onclick="go('agenda')">Ver mis citas</button>
       </div>
     </div>`;
   rebind();
