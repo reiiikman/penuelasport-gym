@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PeñuelaSport GYM · Panel Admin (DEMO)</title>
+<link rel="icon" type="image/webp" href="logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Archivo+Narrow:wght@700&family=Anton&display=swap" rel="stylesheet">
+<style>
+  :root{--magenta:#E91E8C;--cyan:#23A9E0;--ink:#0f1216;--ink-soft:#5b626d;--paper:#fff;--paper-2:#f5f7fb;--paper-3:#eef1f6;--line:#e5e9f0;--grad:linear-gradient(100deg,var(--magenta),var(--cyan));--ok:#15a06a;--warn:#e0a020;--danger:#d64242;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Archivo',system-ui,sans-serif;color:var(--ink);background:var(--paper-2);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}button{font-family:inherit;cursor:pointer;border:0}
+  .display{font-family:'Anton',sans-serif;text-transform:uppercase}
+  .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:800;border-radius:11px;padding:.7em 1.1em;font-size:.9rem;transition:.14s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-grad{background:var(--grad);color:#fff;box-shadow:0 8px 20px -8px rgba(233,30,140,.5)}
+  .btn-ghost{background:var(--paper);border:2px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  .btn-sm{padding:.45em .8em;font-size:.82rem;border-radius:9px}
+  input,select{font-family:inherit;font-size:.95rem;padding:.6em .8em;border:2px solid var(--line);border-radius:9px;width:100%;background:var(--paper);color:var(--ink)}
+  input:focus,select:focus{outline:0;border-color:var(--magenta)}
+  label{font-weight:700;font-size:.8rem;display:block;margin-bottom:.3em}
+  .demo-bar{height:30px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;gap:.6em;font-size:.76rem;font-weight:700}
+  .demo-bar .tag{background:var(--grad);padding:.12em .6em;border-radius:999px;font-family:'Archivo Narrow';letter-spacing:.08em}
+  .demo-bar a{color:var(--cyan)}
+
+  .app{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 30px)}
+  /* SIDEBAR */
+  .side{background:var(--paper);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:30px;height:calc(100vh - 30px);overflow:auto;display:flex;flex-direction:column}
+  .side .logo{width:150px;display:block;margin:4px auto 22px}
+  .side .grp{font-size:.68rem;font-weight:800;letter-spacing:.12em;color:var(--ink-soft);text-transform:uppercase;margin:16px 8px 6px}
+  .side nav a{display:flex;align-items:center;gap:.7em;padding:.62em .8em;border-radius:10px;color:var(--ink-soft);font-weight:700;font-size:.92rem;position:relative}
+  .side nav a svg{width:19px;height:19px}
+  .side nav a:hover{background:var(--paper-2);color:var(--ink)}
+  .side nav a.on{background:var(--grad);color:#fff}
+  .side nav a .soon{margin-left:auto;font-size:.6rem;background:var(--paper-3);color:var(--ink-soft);padding:.15em .5em;border-radius:999px;font-weight:800;letter-spacing:.05em}
+  .side nav a .dot{margin-left:auto;background:var(--warn);color:#fff;font-size:.65rem;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+  .side .me{margin-top:auto;display:flex;align-items:center;gap:.6em;padding:10px 8px;border-top:1px solid var(--line)}
+  .side .me .av{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.8rem}
+  .side .me b{font-size:.86rem}.side .me small{color:var(--ink-soft);font-size:.74rem}
+
+  /* TOPBAR */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;gap:20px}
+  .top h1{font-size:1.7rem;line-height:1}.top .sub{color:var(--ink-soft);font-size:.85rem;margin-top:3px;text-transform:capitalize}
+  .search{flex:1;max-width:440px;position:relative}
+  .search input{padding-left:2.4em;border-radius:11px;background:var(--paper)}
+  .search svg{position:absolute;left:.8em;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--ink-soft)}
+  .top .rt{display:flex;align-items:center;gap:14px}
+  .iconbtn{width:40px;height:40px;border-radius:11px;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;position:relative}
+  .iconbtn svg{width:19px;height:19px;color:var(--ink-soft)}
+  .iconbtn .bdg{position:absolute;top:-4px;right:-4px;width:9px;height:9px;background:var(--magenta);border-radius:50%;border:2px solid var(--paper)}
+  .top .who{display:flex;align-items:center;gap:.5em;font-weight:700;font-size:.86rem}
+  .top .who .av{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.78rem}
+  .top .who small{display:block;color:var(--ink-soft);font-size:.74rem;font-weight:600}
+
+  .main{padding:6px 28px 40px}
+  .grid{display:grid;gap:18px}
+  .c4{grid-template-columns:repeat(4,1fr)}.c3{grid-template-columns:repeat(3,1fr)}.c2{grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .kpi{position:relative}
+  .kpi .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px}
+  .kpi .ic svg{width:22px;height:22px}
+  .kpi .v{font-family:'Anton';font-size:2rem;line-height:1}
+  .kpi .l{color:var(--ink);font-weight:700;font-size:.92rem;margin-top:2px}
+  .kpi .s{color:var(--ink-soft);font-size:.78rem;margin-top:2px}
+  .kpi .tr{position:absolute;top:18px;right:18px;font-weight:800;font-size:.8rem}
+  .up{color:var(--ok)}.down{color:var(--danger)}
+  .sec-t{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .sec-t h3{font-size:1.15rem}.sec-t a{color:var(--magenta);font-weight:700;font-size:.82rem}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:.7em .5em;border-bottom:1px solid var(--line);font-size:.88rem}
+  th{color:var(--ink-soft);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+  tr:last-child td{border-bottom:0}
+  td.r,th.r{text-align:right}
+  .badge{display:inline-flex;align-items:center;gap:.3em;padding:.22em .65em;border-radius:999px;font-size:.75rem;font-weight:800}
+  .b-ok{background:rgba(21,160,106,.14);color:var(--ok)}.b-warn{background:rgba(224,160,32,.16);color:var(--warn)}.b-danger{background:rgba(214,66,66,.14);color:var(--danger)}.b-info{background:rgba(35,169,224,.14);color:var(--cyan)}.b-mag{background:rgba(233,30,140,.12);color:var(--magenta)}
+  .muted{color:var(--ink-soft)}
+  .avm{width:30px;height:30px;border-radius:50%;background:var(--paper-3);color:var(--ink-soft);display:inline-grid;place-items:center;font-weight:800;font-size:.72rem;margin-right:.5em;vertical-align:middle}
+  .vencer{display:flex;align-items:center;padding:.6em 0;border-bottom:1px solid var(--line)}
+  .vencer:last-child{border-bottom:0}
+  .empty{text-align:center;color:var(--ink-soft);padding:40px;border:2px dashed var(--line);border-radius:14px}
+
+  /* POS */
+  .pos{display:grid;grid-template-columns:1fr 340px;gap:18px}
+  .pcat{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .pchip{border:2px solid var(--line);border-radius:999px;padding:.4em 1em;font-weight:700;font-size:.85rem;background:var(--paper)}
+  .pchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+  .prod{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--paper);cursor:pointer;transition:.14s;text-align:left}
+  .prod:hover{border-color:var(--magenta);transform:translateY(-3px)}
+  .prod .em{font-size:1.7rem}.prod b{display:block;font-size:.9rem;margin:.3em 0 .1em}
+  .prod .pr{font-family:'Anton';font-size:1.15rem}.prod .st{color:var(--ink-soft);font-size:.72rem}
+  .cart{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;position:sticky;top:20px;display:flex;flex-direction:column;max-height:calc(100vh - 60px)}
+  .cart h3{font-size:1.1rem;margin-bottom:10px}
+  .citems{flex:1;overflow:auto;margin:-4px 0}
+  .ci{display:flex;align-items:center;gap:8px;padding:.5em 0;border-bottom:1px solid var(--line);font-size:.86rem}
+  .ci .q{display:flex;align-items:center;gap:6px}
+  .ci .q button{width:22px;height:22px;border-radius:6px;background:var(--paper-3);font-weight:800}
+  .ci .rm{margin-left:auto;color:var(--danger);font-weight:800;background:none}
+  .ctot{border-top:2px solid var(--ink);margin-top:8px;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline}
+  .ctot .n{font-family:'Anton';font-size:1.8rem}
+
+  /* modal */
+  .mbg{position:fixed;inset:0;background:rgba(9,10,13,.55);display:none;place-items:center;z-index:100;padding:18px}
+  .mbg.on{display:grid}
+  .modal{background:var(--paper);border-radius:18px;padding:26px;max-width:440px;width:100%;max-height:88vh;overflow:auto}
+  .modal h3{font-size:1.25rem;margin-bottom:.4em}.modal .x{float:right;font-size:1.4rem;background:none;color:var(--ink-soft)}
+  .field{margin-bottom:12px}
+  .pm{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .pm button{display:flex;align-items:center;gap:.7em;border:2px solid var(--line);border-radius:11px;padding:.7em .9em;font-weight:800;background:var(--paper);text-align:left}
+  .pm button:hover{border-color:var(--ink)}
+  .pm .lg{width:36px;height:26px;border-radius:6px;display:grid;place-items:center;color:#fff;font-family:'Anton';font-size:.7rem}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:.85em 1.3em;border-radius:11px;font-weight:700;z-index:200;opacity:0;transition:.25s;pointer-events:none}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media(max-width:1000px){.app{grid-template-columns:1fr}.side{display:none}.c4,.c3{grid-template-columns:1fr 1fr}.pos{grid-template-columns:1fr}}
+  @media(max-width:620px){.c4,.c3,.c2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span class="tag">DEMO</span> Panel de administración simulado · <a href="index.html">ver web</a> · <a href="app.html">app socio</a></div>
+<div class="app">
+  <aside class="side">
+    <img src="logo.webp" alt="PeñuelaSport" class="logo">
+    <div class="grp">Operación</div>
+    <nav id="nav1"></nav>
+    <div class="grp">Gestión</div>
+    <nav id="nav2"></nav>
+    <div class="grp">Sistema</div>
+    <nav id="nav3"></nav>
+    <div class="me"><span class="av">RP</span><div><b>Rodrigo Peñuela</b><small>Administrador</small></div></div>
+  </aside>
+  <div>
+    <div class="top">
+      <div><h1 id="vTitle">Inicio</h1><div class="sub" id="vDate"></div></div>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Buscar productos, socios, ventas..."></div>
+      <div class="rt">
+        <div class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="bdg"></span></div>
+        <button class="btn btn-grad" onclick="go('pos')"><svg viewBox="0 0 24 24" width="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Nueva venta</button>
+        <div class="who"><div><b>Rodrigo Peñuela</b><small>Administrador</small></div><span class="av">RP</span></div>
+      </div>
+    </div>
+    <div class="main" id="view"></div>
+  </div>
+</div>
+<div class="mbg" id="mbg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const CLP=n=>'$'+(n||0).toLocaleString('es-CL');
+const uid=()=>'V'+Math.floor(Math.random()*9000+1000);
+const NAV=[
+ [['inicio','Inicio','M3 11l9-7 9 7M5 10v10h14V10'],['pos','Punto de Venta','M6 2l1.5 3h9L18 2M4 7h16l-1.5 12a2 2 0 01-2 1.8H7.5a2 2 0 01-2-1.8z'],['inv','Productos e Inventario','M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7'],['caja','Caja','M2 6h20v12H2zM2 10h20']],
+ [['socios','Socios','M9 8a3 3 0 100-6 3 3 0 000 6zM2 20a7 7 0 0114 0M16 3a3 3 0 010 6M22 20a5 5 0 00-6-4.6'],['subs','Suscripciones y Pagos','M2 5h20v14H2zM2 10h20',1],['acceso','Control de Acceso','M12 2a5 5 0 015 5v3H7V7a5 5 0 015-5zM5 10h14v11H5z'],['reservas','Reservas y Agenda','M3 4h18v17H3zM3 9h18M8 2v4M16 2v4'],['cms','Contenido de la App','M4 5h16v14H4zM4 9h16M9 5v14']],
+ [['reportes','Reportes','M4 20V10M10 20V4M16 20v-7M22 20H2'],['users','Usuarios del sistema','M9 8a3 3 0 100-6 3 3 0 000 6zM2 20a7 7 0 0114 0M18 8v6M15 11h6',1],['config','Configuración','M12 15a3 3 0 100-6 3 3 0 000 6zM19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 2h-4l-.4 2.4a7 7 0 00-1.7 1l-2.3-1-2 3.4L4.1 11a7 7 0 000 2l-2 1.6 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.4h4l.4-2.4a7 7 0 001.7-1l2.3 1 2-3.4L18.9 13a7 7 0 00.1-1z',1]]
+];
+const CAT=['Bebidas','Snacks proteicos','Suplementos','Accesorios'];
+const seedProducts=[
+ {id:'p1',n:'Agua 500ml',cat:'Bebidas',pr:1000,st:48,em:'💧'},
+ {id:'p2',n:'Bebida energética',cat:'Bebidas',pr:2500,st:30,em:'⚡'},
+ {id:'p3',n:'Bebida isotónica',cat:'Bebidas',pr:1800,st:24,em:'🥤'},
+ {id:'p4',n:'Alfajor proteico',cat:'Snacks proteicos',pr:2000,st:40,em:'🍫'},
+ {id:'p5',n:'Barra proteica',cat:'Snacks proteicos',pr:2500,st:35,em:'🍬'},
+ {id:'p6',n:'Shake post-entreno',cat:'Snacks proteicos',pr:3500,st:18,em:'🥛'},
+ {id:'p7',n:'Pre-entreno (porción)',cat:'Suplementos',pr:3000,st:22,em:'🔋'},
+ {id:'p8',n:'Creatina (porción)',cat:'Suplementos',pr:2500,st:26,em:'💊'},
+ {id:'p9',n:'Shaker',cat:'Accesorios',pr:6000,st:12,em:'🧴'},
+ {id:'p10',n:'Polera PeñuelaSport',cat:'Accesorios',pr:12000,st:8,em:'👕'}
+];
+const SOCIOS=[
+ {n:'Diego Araya',plan:'Mensual',venc:1,estado:'activa'},
+ {n:'Matías Fuentes',plan:'Mensual',venc:2,estado:'activa'},
+ {n:'Antonia Muñoz',plan:'Estudiantil',venc:4,estado:'activa'},
+ {n:'Camila Rojas',plan:'Full Anual',venc:5,estado:'activa'},
+ {n:'Fernanda Vega',plan:'Trimestral',venc:22,estado:'activa'},
+ {n:'Joaquín Silva',plan:'Turno 14x14',venc:-3,estado:'vencida'},
+ {n:'Valentina Palma',plan:'Anual',venc:120,estado:'activa'}
+];
+let DB=load();
+function load(){try{const d=JSON.parse(localStorage.getItem('ps_admin'));if(d&&d.products)return d;}catch(e){}return {products:JSON.parse(JSON.stringify(seedProducts)),sales:[
+ {folio:'V1944',det:'1× Polera PeñuelaSport',socio:'Matías Fuentes',medio:'Mercado Pago',hora:'03:37 p. m.',total:12000},
+ {folio:'V1945',det:'1× Bebida energética · 2× Creatina (porción)',socio:'Camila Rojas',medio:'Efectivo',hora:'03:30 p. m.',total:7500},
+ {folio:'V1946',det:'1× Agua 500ml',socio:'Fernanda Vega',medio:'Transferencia',hora:'02:50 p. m.',total:1000},
+ {folio:'V1947',det:'1× Barra proteica · 2× Pre-entreno (porción)',socio:'Mostrador',medio:'Transferencia',hora:'01:45 p. m.',total:11500}
+]};}
+function save(){localStorage.setItem('ps_admin',JSON.stringify(DB));}
+function lowStock(){return DB.products.filter(p=>p.st<=10).length;}
+
+/* nav */
+function buildNav(){
+  NAV.forEach((grp,i)=>{
+    $('#nav'+(i+1)).innerHTML=grp.map(([k,l,d,soon])=>`<a href="#${k}" data-v="${k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${d}"/></svg>${l}${soon?'<span class="soon">Pronto</span>':(k==='inv'?'<span class="dot" id="invDot"></span>':'')}</a>`).join('');
+  });
+  document.querySelectorAll('[data-v]').forEach(a=>a.onclick=e=>{e.preventDefault();go(a.dataset.v);});
+}
+let current='inicio';
+const TITLES={inicio:'Inicio',pos:'Punto de Venta',inv:'Productos e Inventario',caja:'Caja',socios:'Socios',subs:'Suscripciones y Pagos',acceso:'Control de Acceso',reservas:'Reservas y Agenda',cms:'Contenido de la App',reportes:'Reportes',users:'Usuarios del sistema',config:'Configuración'};
+function go(v){current=v;document.querySelectorAll('[data-v]').forEach(a=>a.classList.toggle('on',a.dataset.v===v));$('#vTitle').textContent=TITLES[v];window.scrollTo(0,0);({inicio:vInicio,pos:vPos,inv:vInv,caja:vCaja,socios:vSocios,subs:vSubs,acceso:vAcceso,reservas:vReservas,cms:vCms,reportes:vReportes,users:vUsers,config:vConfig}[v])();updateDot();}
+function updateDot(){const d=$('#invDot');if(d){const n=lowStock();d.style.display=n?'grid':'none';d.textContent=n;}}
+
+/* views */
+function vInicio(){
+  const pts=[92000,60000,42000,44000,66000,30000,101000];const tot=pts.reduce((a,b)=>a+b,0)+20100;
+  $('#view').innerHTML=`
+  <div class="grid c4">
+    ${kpi('#e91e8c','rgba(233,30,140,.12)','M9 8a3 3 0 100-6 3 3 0 000 6zM2 20a7 7 0 0114 0','11','Socios activos','de 142 inscritos','+6','up')}
+    ${kpi('#23a9e0','rgba(35,169,224,.12)','M4 20V10M10 20V4M16 20v-7','$199.500','Ingresos del mes','Junio 2026','+12%','up')}
+    ${kpi('#15a06a','rgba(21,160,106,.12)','M6 2l1.5 3h9L18 2M4 7h16l-1.5 12H5.5z','$107.000','Ventas de hoy','9 ventas · ticket prom. $11.889','','')}
+    ${kpi('#e0a020','rgba(224,160,32,.14)','M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9','4','Suscripciones por vencer','próximos 7 días','atención','down')}
+  </div>
+  <div class="grid c3" style="margin-top:18px;grid-template-columns:2fr 1fr">
+    <div class="card">
+      <div class="sec-t"><div><h3>Ingresos por día</h3><div class="muted" style="font-size:.8rem">Últimos 7 días · todas las cajas</div></div><div style="text-align:right"><div class="display" style="font-size:1.6rem">${CLP(tot)}</div><div class="muted" style="font-size:.72rem">total semana</div></div></div>
+      ${chart(pts)}
+    </div>
+    <div class="card">
+      <div class="sec-t"><h3>Por vencer</h3><a href="#subs" data-v="subs">Ver todas</a></div>
+      ${SOCIOS.filter(s=>s.venc>=0&&s.venc<=5).sort((a,b)=>a.venc-b.venc).map(s=>`<div class="vencer"><span class="avm">${ini(s.n)}</span><div><b style="font-size:.9rem">${s.n}</b><div class="muted" style="font-size:.76rem">${s.plan}</div></div><span class="badge ${s.venc<=1?'b-danger':s.venc<=3?'b-warn':'b-info'}" style="margin-left:auto">${s.venc===0?'Hoy':'En '+s.venc+(s.venc===1?' día':' días')}</span></div>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="sec-t"><h3>Últimas ventas</h3><a href="#pos" data-v="pos">Ir al Punto de Venta</a></div>
+    <table><thead><tr><th>Folio</th><th>Detalle</th><th>Socio</th><th>Medio</th><th>Hora</th><th class="r">Total</th></tr></thead><tbody>
+    ${DB.sales.map(s=>`<tr><td class="muted">${s.folio}</td><td>${s.det}</td><td>${s.socio}</td><td><span class="badge ${s.medio==='Efectivo'?'b-ok':s.medio==='Mercado Pago'?'b-info':'b-mag'}">${s.medio}</span></td><td class="muted">${s.hora}</td><td class="r"><b>${CLP(s.total)}</b></td></tr>`).join('')}
+    </tbody></table>
+  </div>`;
+  bindNav();
+}
+function kpi(c,bg,d,v,l,s,tr,cl){return `<div class="card kpi">${tr?`<span class="tr ${cl}">${cl==='up'?'↑ ':cl==='down'?'↓ ':''}${tr}</span>`:''}<div class="ic" style="background:${bg};color:${c}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${d}"/></svg></div><div class="v">${v}</div><div class="l">${l}</div><div class="s">${s}</div></div>`;}
+function chart(pts){const W=560,H=210,pad=20,max=Math.max(...pts)*1.15;const x=i=>pad+i*(W-pad*2)/(pts.length-1);const y=v=>H-pad-(v/max)*(H-pad*2);const line=pts.map((v,i)=>`${x(i)},${y(v)}`).join(' ');const days=['jue','vie','sáb','dom','lun','mar','mié'];
+  return `<svg viewBox="0 0 ${W} ${H+22}" style="width:100%;height:auto"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#E91E8C"/><stop offset="1" stop-color="#23A9E0"/></linearGradient><linearGradient id="fg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E91E8C" stop-opacity=".18"/><stop offset="1" stop-color="#23A9E0" stop-opacity="0"/></linearGradient></defs><polygon points="${x(0)},${H-pad} ${line} ${x(pts.length-1)},${H-pad}" fill="url(#fg)"/><polyline points="${line}" fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="4.5" fill="#fff" stroke="url(#lg)" stroke-width="3"/>`).join('')}${days.map((d,i)=>`<text x="${x(i)}" y="${H+14}" text-anchor="middle" font-size="11" fill="#5b626d" font-family="Archivo">${d}</text>`).join('')}</svg>`;}
+function ini(n){return n.split(' ').map(w=>w[0]).slice(0,2).join('');}
+
+/* POS */
+let cart=[];
+function vPos(){
+  $('#view').innerHTML=`<div class="pos">
+    <div>
+      <div class="pcat" id="pcat"><button class="pchip on" data-c="Todos">Todos</button>${CAT.map(c=>`<button class="pchip" data-c="${c}">${c}</button>`).join('')}</div>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+    <div class="cart">
+      <h3>Venta actual</h3>
+      <div class="citems" id="citems"></div>
+      <div class="ctot"><span class="muted">Total</span><span class="n" id="ctot">$0</span></div>
+      <button class="btn btn-grad" style="margin-top:12px;width:100%" onclick="cobrar()">Cobrar</button>
+    </div></div>`;
+  posFilter('Todos');
+  $('#pcat').querySelectorAll('.pchip').forEach(b=>b.onclick=()=>{$('#pcat').querySelectorAll('.pchip').forEach(x=>x.classList.toggle('on',x===b));posFilter(b.dataset.c);});
+  renderCart();
+}
+function posFilter(c){$('#pgrid').innerHTML=DB.products.filter(p=>c==='Todos'||p.cat===c).map(p=>`<button class="prod" ${p.st<=0?'disabled style=opacity:.4':''} onclick="addCart('${p.id}')"><span class="em">${p.em}</span><b>${p.n}</b><span class="pr">${CLP(p.pr)}</span><div class="st">Stock: ${p.st}</div></button>`).join('');}
+window.addCart=id=>{const p=DB.products.find(x=>x.id===id);const it=cart.find(x=>x.id===id);const q=it?it.q:0;if(q>=p.st)return toast('Sin stock suficiente');if(it)it.q++;else cart.push({id,n:p.n,pr:p.pr,q:1});renderCart();};
+function renderCart(){const box=$('#citems');if(!box)return;if(!cart.length){box.innerHTML='<div class="empty" style="padding:24px">Agrega productos</div>';}else{box.innerHTML=cart.map(i=>`<div class="ci"><div><b>${i.n}</b><div class="muted" style="font-size:.76rem">${CLP(i.pr)}</div></div><div class="q"><button onclick="chg('${i.id}',-1)">−</button>${i.q}<button onclick="chg('${i.id}',1)">+</button></div><button class="rm" onclick="chg('${i.id}',-99)">×</button></div>`).join('');}
+  $('#ctot').textContent=CLP(cart.reduce((a,i)=>a+i.pr*i.q,0));}
+window.chg=(id,d)=>{const it=cart.find(x=>x.id===id);if(!it)return;const p=DB.products.find(x=>x.id===id);if(d===99||it.q+d<=0||d===-99){cart=cart.filter(x=>x.id!==id);}else{if(it.q+d>p.st)return toast('Sin stock');it.q+=d;}renderCart();};
+window.cobrar=()=>{const tot=cart.reduce((a,i)=>a+i.pr*i.q,0);if(!tot)return toast('Carrito vacío');
+  modal(`<button class="x" onclick="closeM()">×</button><h3>Cobrar ${CLP(tot)}</h3>
+   <div class="field"><label>Asociar a socio (opcional)</label><input id="cbSocio" placeholder="Mostrador"></div>
+   <label>Medio de pago</label>
+   <div class="pm">
+     <button data-m="Efectivo"><span class="lg" style="background:#15a06a">EFE</span>Efectivo</button>
+     <button data-m="Débito"><span class="lg" style="background:#0f1216">DEB</span>Débito</button>
+     <button data-m="Mercado Pago"><span class="lg" style="background:#009ee3">MP</span>Mercado Pago</button>
+     <button data-m="Transferencia"><span class="lg" style="background:#E91E8C">TRF</span>Transferencia</button>
+   </div>`);
+  $('#modal').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>finVenta(b.dataset.m,tot));};
+function finVenta(medio,tot){
+  const socio=($('#cbSocio').value||'Mostrador');
+  const det=cart.map(i=>`${i.q}× ${i.n}`).join(' · ');
+  cart.forEach(i=>{const p=DB.products.find(x=>x.id===i.id);if(p)p.st-=i.q;});
+  const folio=uid();
+  DB.sales.unshift({folio,det,socio,medio,hora:'ahora',total:tot});save();
+  const items=cart.slice();cart=[];
+  modal(`<div style="text-align:center;padding:8px 4px"><div style="width:60px;height:60px;border-radius:50%;background:#15a06a;display:grid;place-items:center;margin:0 auto 12px"><svg viewBox="0 0 24 24" width="32" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><h3>Venta registrada</h3>
+   <p class="muted" style="margin:4px 0">${folio} · ${medio}</p>
+   <div class="card" style="text-align:left;margin:12px 0;background:var(--paper-2)">${items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:.86rem;padding:.2em 0"><span>${i.q}× ${i.n}</span><b>${CLP(i.pr*i.q)}</b></div>`).join('')}<div style="display:flex;justify-content:space-between;border-top:2px solid var(--ink);margin-top:6px;padding-top:6px"><b>Total</b><b>${CLP(tot)}</b></div></div>
+   <button class="btn btn-grad" style="width:100%" onclick="closeM();go('pos')">Nueva venta</button></div>`);
+  updateDot();
+}
+
+/* INVENTARIO */
+function vInv(){
+  $('#view').innerHTML=`<div class="card"><div class="sec-t"><h3>Productos e inventario</h3><button class="btn btn-grad btn-sm" onclick="editProd()">+ Nuevo producto</button></div>
+   <table><thead><tr><th>Producto</th><th>Categoría</th><th class="r">Precio</th><th class="r">Stock</th><th class="r">Estado</th><th></th></tr></thead><tbody>
+   ${DB.products.map(p=>`<tr><td><span style="font-size:1.2rem">${p.em}</span> ${p.n}</td><td class="muted">${p.cat}</td><td class="r">${CLP(p.pr)}</td><td class="r"><b>${p.st}</b></td><td class="r"><span class="badge ${p.st<=5?'b-danger':p.st<=10?'b-warn':'b-ok'}">${p.st<=5?'Crítico':p.st<=10?'Bajo':'OK'}</span></td><td class="r"><button class="btn btn-ghost btn-sm" onclick="editProd('${p.id}')">Editar</button></td></tr>`).join('')}
+   </tbody></table></div>`;
+}
+window.editProd=id=>{const p=id?DB.products.find(x=>x.id===id):{id:'p'+Date.now(),n:'',cat:'Bebidas',pr:0,st:0,em:'📦'};
+  modal(`<button class="x" onclick="closeM()">×</button><h3>${id?'Editar':'Nuevo'} producto</h3>
+   <div class="field"><label>Nombre</label><input id="pn" value="${p.n}"></div>
+   <div class="field"><label>Emoji</label><input id="pe" value="${p.em}" maxlength="2"></div>
+   <div class="field"><label>Categoría</label><select id="pc">${CAT.map(c=>`<option ${c===p.cat?'selected':''}>${c}</option>`).join('')}</select></div>
+   <div class="grid c2" style="gap:10px"><div class="field"><label>Precio</label><input id="pp" type="number" value="${p.pr}"></div><div class="field"><label>Stock</label><input id="ps" type="number" value="${p.st}"></div></div>
+   <button class="btn btn-grad" style="width:100%" onclick="saveProd('${p.id}',${id?1:0})">Guardar</button>`);
+};
+window.saveProd=(id,exist)=>{const n=$('#pn').value.trim();if(!n)return toast('Falta nombre');const o={id,n,em:$('#pe').value||'📦',cat:$('#pc').value,pr:+$('#pp').value||0,st:+$('#ps').value||0};if(exist){const i=DB.products.findIndex(x=>x.id===id);DB.products[i]=o;}else DB.products.push(o);save();closeM();toast('Producto guardado');vInv();updateDot();};
+
+/* CAJA */
+function vCaja(){const ventas=DB.sales.reduce((a,s)=>a+s.total,0);const porMedio={};DB.sales.forEach(s=>porMedio[s.medio]=(porMedio[s.medio]||0)+s.total);
+  $('#view').innerHTML=`<div class="grid c3">
+   <div class="card kpi"><div class="v">${CLP(ventas)}</div><div class="l">Ventas de productos</div><div class="s">${DB.sales.length} transacciones</div></div>
+   <div class="card kpi"><div class="v">$280.000</div><div class="l">Suscripciones</div><div class="s">Hoy</div></div>
+   <div class="card kpi"><div class="v">$55.000</div><div class="l">Servicios</div><div class="s">Nutrición · evaluaciones</div></div>
+  </div>
+  <div class="card" style="margin-top:18px"><div class="sec-t"><h3>Arqueo del día</h3><button class="btn btn-grad btn-sm" onclick="toast('Caja cerrada (demo)')">Cerrar caja</button></div>
+   <table><thead><tr><th>Medio de pago</th><th class="r">Monto</th></tr></thead><tbody>${Object.entries(porMedio).map(([m,v])=>`<tr><td>${m}</td><td class="r"><b>${CLP(v)}</b></td></tr>`).join('')}<tr><td><b>Efectivo esperado en caja</b></td><td class="r"><b>${CLP(porMedio['Efectivo']||0)}</b></td></tr></tbody></table></div>`;
+}
+/* SOCIOS */
+function vSocios(){$('#view').innerHTML=`<div class="card"><div class="sec-t"><h3>Socios (${SOCIOS.length})</h3><button class="btn btn-grad btn-sm" onclick="toast('Formulario de socio (demo)')">+ Nuevo socio</button></div>
+   <table><thead><tr><th>Socio</th><th>Plan</th><th>Vence</th><th class="r">Estado</th><th></th></tr></thead><tbody>
+   ${SOCIOS.map(s=>`<tr><td><span class="avm">${ini(s.n)}</span>${s.n}</td><td class="muted">${s.plan}</td><td>${s.venc<0?'Hace '+(-s.venc)+'d':'En '+s.venc+'d'}</td><td class="r"><span class="badge ${s.estado==='vencida'?'b-danger':'b-ok'}">${s.estado}</span></td><td class="r"><button class="btn btn-ghost btn-sm" onclick="toast('Ficha de ${s.n} (demo)')">Ver</button></td></tr>`).join('')}
+   </tbody></table></div>`;}
+/* SUBS */
+function vSubs(){$('#view').innerHTML=`<div class="card"><div class="sec-t"><h3>Suscripciones por vencer</h3></div>
+   <table><thead><tr><th>Socio</th><th>Plan</th><th>Vence</th><th class="r">Acción</th></tr></thead><tbody>
+   ${SOCIOS.filter(s=>s.venc<=7).sort((a,b)=>a.venc-b.venc).map(s=>`<tr><td><span class="avm">${ini(s.n)}</span>${s.n}</td><td class="muted">${s.plan}</td><td><span class="badge ${s.venc<0?'b-danger':s.venc<=1?'b-danger':s.venc<=3?'b-warn':'b-info'}">${s.venc<0?'Vencida':'En '+s.venc+'d'}</span></td><td class="r"><button class="btn btn-grad btn-sm" onclick="toast('Renovación + pago (demo)')">Renovar</button></td></tr>`).join('')}
+   </tbody></table></div>
+   <div class="card" style="margin-top:18px"><h3 style="margin-bottom:12px">Historial de pagos</h3><table><thead><tr><th>Fecha</th><th>Concepto</th><th>Medio</th><th class="r">Monto</th></tr></thead><tbody>
+   <tr><td>08 jun 2026</td><td>Sala de Musculación · Anual</td><td class="muted">Webpay</td><td class="r">$280.000</td></tr>
+   <tr><td>07 jun 2026</td><td>Control nutricional</td><td class="muted">Mercado Pago</td><td class="r">$25.000</td></tr></tbody></table></div>`;}
+/* ACCESO */
+function vAcceso(){$('#view').innerHTML=`<div class="grid c2" style="grid-template-columns:1fr 1fr">
+   <div class="card"><h3 style="margin-bottom:12px">Control de acceso</h3>
+     <div class="field"><label>Escanea QR o ingresa RUT / nombre del socio</label><input id="acIn" placeholder="Ej: Diego Araya"></div>
+     <button class="btn btn-grad" style="width:100%" onclick="checkin()">Validar acceso</button>
+     <div id="acRes" style="margin-top:16px"></div>
+   </div>
+   <div class="card"><h3 style="margin-bottom:12px">Accesos de hoy</h3><table><tbody id="acLog">
+     <tr><td><span class="avm">CR</span>Camila Rojas</td><td class="muted r">19:12</td><td class="r"><span class="badge b-ok">Ingreso</span></td></tr>
+     <tr><td><span class="avm">FV</span>Fernanda Vega</td><td class="muted r">18:40</td><td class="r"><span class="badge b-ok">Ingreso</span></td></tr>
+   </tbody></table></div></div>`;}
+window.checkin=()=>{const v=($('#acIn').value||'').trim().toLowerCase();const s=SOCIOS.find(x=>x.n.toLowerCase().includes(v));const res=$('#acRes');
+  if(!v){res.innerHTML='';return;}
+  if(!s){res.innerHTML=`<div class="card" style="background:rgba(214,66,66,.1);border-color:var(--danger)"><b style="color:var(--danger)">✕ Socio no encontrado</b></div>`;return;}
+  if(s.estado==='vencida'||s.venc<0){res.innerHTML=`<div class="card" style="background:rgba(214,66,66,.1);border-color:var(--danger)"><b style="color:var(--danger)">✕ Acceso denegado</b><div class="muted" style="font-size:.85rem;margin-top:4px">${s.n} · suscripción vencida</div><button class="btn btn-grad btn-sm" style="margin-top:10px" onclick="toast('Renovar (demo)')">Renovar / pagar</button></div>`;return;}
+  res.innerHTML=`<div class="card" style="background:rgba(21,160,106,.1);border-color:var(--ok)"><b style="color:var(--ok)">✓ Acceso permitido</b><div class="muted" style="font-size:.85rem;margin-top:4px">${s.n} · ${s.plan} · vence en ${s.venc}d</div></div>`;
+  $('#acLog').insertAdjacentHTML('afterbegin',`<tr><td><span class="avm">${ini(s.n)}</span>${s.n}</td><td class="muted r">ahora</td><td class="r"><span class="badge b-ok">Ingreso</span></td></tr>`);toast('Check-in registrado');};
+/* RESERVAS */
+function vReservas(){$('#view').innerHTML=`<div class="card"><div class="sec-t"><h3>Reservas y citas</h3></div>
+   <table><thead><tr><th>Servicio</th><th>Con</th><th>Socio</th><th>Fecha</th><th class="r">Estado</th></tr></thead><tbody>
+   <tr><td>Control nutricional</td><td class="muted">Catalina Varas</td><td>Camila Rojas</td><td>Vie 10:00</td><td class="r"><span class="badge b-ok">Confirmada</span></td></tr>
+   <tr><td>Personalizado 1:1</td><td class="muted">Jorge Jordán</td><td>Diego Araya</td><td>Sáb 12:00</td><td class="r"><span class="badge b-ok">Confirmada</span></td></tr>
+   <tr><td>Evaluación física</td><td class="muted">Recepción</td><td>Antonia Muñoz</td><td>Lun 17:00</td><td class="r"><span class="badge b-warn">Pendiente</span></td></tr>
+   </tbody></table></div>`;}
+/* CMS */
+function vCms(){$('#view').innerHTML=`<div class="grid c2">
+   ${cmsCard('Planes','4 planes activos','Sala de Musculación, Turno 14x14, Estudiantil, Personalizado')}
+   ${cmsCard('Rutinas oficiales','3 publicadas','Full Body, Hipertrofia Torso-Pierna, Glúteos')}
+   ${cmsCard('Profesores','4 en el equipo','Puga, Santander, Jordán, Arancibia')}
+   ${cmsCard('Servicios','Nutrición, evaluación, dieta','Precios y disponibilidad')}
+   ${cmsCard('Novedades / Banners','2 activos','Aniversario #1 · Día de prueba')}
+   ${cmsCard('Clases dirigidas','5 tipos','Funcional, Spinning, Crossfit, Zumba, Boxeo')}
+  </div>`;}
+function cmsCard(t,s,d){return `<div class="card"><div class="sec-t"><h3>${t}</h3><button class="btn btn-ghost btn-sm" onclick="toast('Editar ${t} (demo)')">Editar</button></div><b>${s}</b><div class="muted" style="font-size:.85rem;margin-top:4px">${d}</div></div>`;}
+/* REPORTES */
+function vReportes(){const pts=[120,140,160,150,190,210,230,245];
+  $('#view').innerHTML=`<div class="grid c3">
+   <div class="card kpi"><div class="v">$1.2M</div><div class="l">Ingresos 2026</div><div class="s">+18% vs 2025</div></div>
+   <div class="card kpi"><div class="v">Polera</div><div class="l">Producto top</div><div class="s">142 vendidas</div></div>
+   <div class="card kpi"><div class="v">Funcional</div><div class="l">Clase más llena</div><div class="s">89% ocupación</div></div>
+  </div>
+  <div class="card" style="margin-top:18px"><div class="sec-t"><h3>Nuevos socios por mes</h3><button class="btn btn-ghost btn-sm" onclick="toast('Exportar (demo)')">Exportar</button></div>${chart(pts)}</div>`;}
+/* USERS */
+function vUsers(){$('#view').innerHTML=`<div class="card"><div class="sec-t"><h3>Usuarios del sistema</h3><button class="btn btn-grad btn-sm" onclick="toast('Nuevo usuario (demo)')">+ Usuario</button></div>
+   <table><thead><tr><th>Nombre</th><th>Rol</th><th class="r">Estado</th></tr></thead><tbody>
+   <tr><td><span class="avm">RP</span>Rodrigo Peñuela</td><td><span class="badge b-mag">Administrador</span></td><td class="r"><span class="badge b-ok">Activo</span></td></tr>
+   <tr><td><span class="avm">MC</span>María Castro</td><td><span class="badge b-info">Cajero</span></td><td class="r"><span class="badge b-ok">Activo</span></td></tr>
+   <tr><td><span class="avm">JT</span>Jorge Tapia</td><td><span class="badge b-info">Recepción</span></td><td class="r"><span class="badge b-ok">Activo</span></td></tr>
+   </tbody></table></div>`;}
+/* CONFIG */
+function vConfig(){$('#view').innerHTML=`<div class="card" style="max-width:560px"><h3 style="margin-bottom:14px">Configuración</h3>
+   <div class="field"><label>Nombre del gimnasio</label><input value="PeñuelaSport GYM"></div>
+   <div class="field"><label>Dirección</label><input value="Pueblito Peñuelas, Área Deportiva, Coquimbo"></div>
+   <div class="field"><label>WhatsApp</label><input value="+569 5451 7153"></div>
+   <button class="btn btn-grad" onclick="toast('Guardado (demo)')">Guardar cambios</button></div>`;}
+
+/* helpers */
+function bindNav(){document.querySelectorAll('[data-v]').forEach(a=>a.onclick=e=>{e.preventDefault();go(a.dataset.v);});}
+function modal(h){$('#modal').innerHTML=h;$('#mbg').classList.add('on');}
+window.closeM=()=>$('#mbg').classList.remove('on');
+$('#mbg').onclick=e=>{if(e.target===$('#mbg'))closeM();};
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2000);}
+$('#vDate').textContent=new Date().toLocaleDateString('es-CL',{weekday:'long',day:'2-digit',month:'long'});
+buildNav();go('inicio');
+</script>
+</body>
+</html>
